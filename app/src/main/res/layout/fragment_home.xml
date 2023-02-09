@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/fragment_bkgnd"
+        android:orientation="vertical"
+        tools:context=".ui.fragment.HomeFragment">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/neuealtegrotesk_bold"
+            android:text="philbrick"
+            android:textColor="@color/colorBlue"
+            android:textSize="@dimen/_24ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:fontFamily="@font/neuealtegrotesk_bold"
+            android:text="PROVIDING ELEVATOR SOLUTIONS"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_8ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtTitle" />
+
+        <View
+            android:id="@+id/viewDivider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/colorDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtDesc" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viewDivider">
+
+            ermanently delete<LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnBluetooth"
+                    android:layout_width="@dimen/_200sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:background="@drawable/item_btn_bkgnd"
+                    android:fontFamily="@font/neuealtegrotesk_semibold"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:text="Select Bluetooth"
+                    android:textSize="@dimen/_12ssp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnFloorDisplaying"
+                    android:layout_width="@dimen/_200sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/item_btn_bkgnd"
+                    android:enabled="false"
+                    android:fontFamily="@font/neuealtegrotesk_semibold"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:text="Floor Displaying"
+                    android:textSize="@dimen/_12ssp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnBasicConfig"
+                    android:layout_width="@dimen/_200sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/item_btn_bkgnd"
+                    android:enabled="false"
+                    android:fontFamily="@font/neuealtegrotesk_semibold"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:text="Basic Config"
+                    android:textSize="@dimen/_12ssp" />
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnAutoDoorConfig"
+                    android:layout_width="@dimen/_200sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/item_btn_bkgnd"
+                    android:enabled="false"
+                    android:fontFamily="@font/neuealtegrotesk_semibold"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:text="Auto Door Config"
+                    android:textSize="@dimen/_12ssp" />
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnDoorPermission"
+                    android:layout_width="@dimen/_200sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/item_btn_bkgnd"
+                    android:enabled="false"
+                    android:fontFamily="@font/neuealtegrotesk_semibold"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:text="Door Permission"
+                    android:textSize="@dimen/_12ssp" />
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnTrips"
+                    android:layout_width="@dimen/_200sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+
+                    android:background="@drawable/item_btn_bkgnd"
+                    android:enabled="false"
+                    android:fontFamily="@font/neuealtegrotesk_semibold"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:text="Trips"
+
+                    android:textSize="@dimen/_12ssp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnMotorOverrunTimeout"
+                    android:layout_width="@dimen/_200sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/item_btn_bkgnd"
+                    android:enabled="false"
+                    android:fontFamily="@font/neuealtegrotesk_semibold"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:text="Motor Overrun Timeout "
+                    android:textSize="@dimen/_12ssp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnExtraConfig"
+                    android:layout_width="@dimen/_200sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/item_btn_bkgnd"
+                    android:enabled="false"
+                    android:fontFamily="@font/neuealtegrotesk_semibold"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:text="Extra Config"
+                    android:textSize="@dimen/_12ssp" />
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

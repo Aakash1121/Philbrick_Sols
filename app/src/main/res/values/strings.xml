@@ -1,0 +1,62 @@
+<resources>
+    <string name="app_name">ExampleBLE</string>
+
+    <string name="select_operation_type">Select operation type</string>
+    <string name="start_scan">Start scanning</string>
+    <string name="stop_scan">Stop scanning</string>
+    <string name="connect_fail">connection failed</string>
+    <string name="characteristic">Characteristic</string>
+    <string name="data_changed">Data changes:</string>
+    <string name="read">Read</string>
+    <string name="input_hex">Please enter the HEX format command</string>
+
+    <string name="service_list">Service</string>
+    <string name="characteristic_list">Characteristic list</string>
+    <string name="console">Console</string>
+
+    <string name="open_notification">Open notification</string>
+    <string name="close_notification">Close notification</string>
+    <string name="write">Write</string>
+    <string name="connect">Connect</string>
+    <string name="connected">Connected</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="enter">Enter</string>
+    <string name="please_open_blue">Please turn on Bluetooth first</string>
+    <string name="notifyTitle">Prompt</string>
+    <string name="gpsNotifyMsg">BLE needs to open the positioning function</string>
+    <string name="setting">Go to settings</string>
+    <string name="cancel">Cancel</string>
+    <string name="active_disconnected">disconnect</string>
+    <string name="disconnected">Connection disconnect</string>
+    <string name="navigation_drawer_open">sd</string>
+    <string name="navigation_drawer_close">sd</string>
+    <string name="name">NAME: </string>
+    <string name="mac">mac: </string>
+    <string name="service">service</string>
+    <string name="type">type</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="floor_number">Floor Number</string>
+    <string name="floor_name">Floor Name </string>
+    <string name="set_config">Set Config </string>
+    <string name="main_floor">Main Floor :</string>
+    <string name="fireman_floor">Fireman Floor :</string>
+    <string name="home_landing_time">Home Landing Time :</string>
+    <string name="home_landing_floor">Home Landing Floor :</string>
+    <string name="door_operation_timeout">Door Operation Timeout :</string>
+    <string name="hold_time">Hold Time :</string>
+    <string name="reset_trips">Reset Trips</string>
+    <string name="set_trips">Set Trips :</string>
+    <string name="current_trips">Current Trips :</string>
+    <string name="motor_overrun_timeout">Motor Overrun Timeout :</string>
+    <string name="stop_call_cancel">Stop Call Cancel :</string>
+    <string name="attendant_cop_light">Attendant Cop Light :</string>
+    <string name="arrow_status">Arrow Status :</string>
+    <string name="floor_permission">Floor Permission</string>
+
+    <string name="text_error_internal_server">Internal server error. Please retry!!!</string>
+    <string name="text_error_timeout">Sorry, We lost you. Please retry!!!</string>
+    <string name="text_error_connection">Look a like we lost you for a moment. Please retry!!!</string>
+    <string name="text_error_network">No Internet connection!!!</string>
+    <string name="philbrick_solutions">"Philbrick Solutions "</string>
+</resources>

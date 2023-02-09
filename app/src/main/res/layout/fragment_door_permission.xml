@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/fragment_bkgnd"
+        android:orientation="vertical"
+        tools:context=".ui.fragment.FloorDisplayConfigFragment">
+
+        <include
+            android:id="@+id/incAppBar"
+            layout="@layout/item_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnFrontDoorConfig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginVertical="@dimen/_20sdp"
+            android:background="@drawable/item_btn_bkgnd"
+            android:fontFamily="@font/neuealtegrotesk_semibold"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:text="Front Door Config"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12ssp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnRearDoorConfig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:background="@drawable/item_btn_bkgnd"
+            android:fontFamily="@font/neuealtegrotesk_semibold"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:text="Rear Door Config"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12ssp" />
+    </LinearLayout>
+</layout>

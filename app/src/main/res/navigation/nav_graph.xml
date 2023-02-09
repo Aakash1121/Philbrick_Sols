@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.exampleble.ui.fragment.SplashFragment"
+        android:label="fragment_splash2"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/floorDisplayConfigFragment"
+        android:name="com.exampleble.ui.fragment.FloorDisplayConfigFragment"
+        android:label="fragment_splash2"
+        tools:layout="@layout/fragment_floor_display_config" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.exampleble.ui.fragment.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_floorDisplayConfigFragment"
+            app:destination="@id/floorDisplayConfigFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_basicConfigFragment"
+            app:destination="@id/basicConfigFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_autoDoorConfigFragment"
+            app:destination="@id/autoDoorConfigFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_tripsFragment"
+            app:destination="@id/tripsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_motorConfigFragment"
+            app:destination="@id/motorConfigFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_extraConfigFragment"
+            app:destination="@id/extraConfigFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_doorPermissionFragment"
+            app:destination="@id/doorPermissionFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_mainFragment1"
+            app:destination="@id/mainFragment1" />
+    </fragment>
+    <fragment
+        android:id="@+id/basicConfigFragment"
+        android:name="com.exampleble.ui.fragment.BasicConfigFragment"
+        tools:layout="@layout/fragment_basic_config"
+        android:label="BasicConfigFragment" />
+    <fragment
+        android:id="@+id/autoDoorConfigFragment"
+        android:name="com.exampleble.ui.fragment.AutoDoorConfigFragment"
+        tools:layout="@layout/fragment_auto_door_config"
+        android:label="AutoDoorConfigFragment" />
+    <fragment
+        android:id="@+id/tripsFragment"
+        android:name="com.exampleble.ui.fragment.TripsFragment"
+        tools:layout="@layout/fragment_trips"
+        android:label="TripsFragment" />
+    <fragment
+        android:id="@+id/motorConfigFragment"
+        android:name="com.exampleble.ui.fragment.MotorConfigFragment"
+        tools:layout="@layout/fragment_motor_config"
+        android:label="MotorConfigFragment" />
+    <fragment
+        android:id="@+id/extraConfigFragment"
+        android:name="com.exampleble.ui.fragment.ExtraConfigFragment"
+        tools:layout="@layout/fragment_extra_config"
+        android:label="ExtraConfigFragment" />
+    <fragment
+        android:id="@+id/doorPermissionFragment"
+        android:name="com.exampleble.ui.fragment.DoorPermissionFragment"
+        tools:layout="@layout/fragment_door_permission"
+        android:label="DoorPermissionFragment" >
+        <action
+            android:id="@+id/action_doorPermissionFragment_to_frontDoorPermissionFragment"
+            app:destination="@id/frontDoorPermissionFragment" />
+        <action
+            android:id="@+id/action_doorPermissionFragment_to_rearDoorPermissionsFragment"
+            app:destination="@id/rearDoorPermissionsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/frontDoorPermissionFragment"
+        android:name="com.exampleble.ui.fragment.FrontDoorPermissionFragment"
+        tools:layout="@layout/fragment_front_door_permission"
+        android:label="FrontDoorPermissionFragment" />
+    <fragment
+        android:id="@+id/rearDoorPermissionsFragment"
+        android:name="com.exampleble.ui.fragment.RearDoorPermissionsFragment"
+        tools:layout="@layout/fragment_rear_door_permissions"
+        android:label="RearDoorPermissionsFragment" />
+    <fragment
+        android:id="@+id/mainFragment1"
+        android:name="com.exampleble.ui.bluetoothfragment.MainFragment1"
+        android:label="MainFragment1"
+        tools:layout="@layout/fragment_main"/>
+</navigation>
