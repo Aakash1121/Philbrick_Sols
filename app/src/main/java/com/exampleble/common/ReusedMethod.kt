@@ -6,13 +6,30 @@ import android.widget.Toast
 class ReusedMethod {
 
     companion object {
+
+        fun navigateToFragment(
+            fragmentManager: androidx.fragment.app.FragmentManager,
+            yourPlaceholder: Int,
+            fragment: androidx.fragment.app.Fragment,
+            addToBackStack: Boolean,
+        ) {
+
+            val transaction = fragmentManager.beginTransaction()
+
+            transaction.replace(yourPlaceholder, fragment)
+
+
+            if (addToBackStack) transaction.addToBackStack("")
+            transaction.commit()
+        }
+
         fun stringToHex(ba: ByteArray): String {
             val str = StringBuilder()
             for (i in ba.indices) str.append(String.format("%x", ba[i]))
             return str.toString()
         }
 
-        fun hexToString(hex: String): String? {
+        fun hexToString(hex: String): String {
             val str = java.lang.StringBuilder()
             var i = 0
             while (i < hex.length) {

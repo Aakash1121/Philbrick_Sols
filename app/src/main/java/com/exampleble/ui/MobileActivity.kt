@@ -92,6 +92,7 @@ class MobileActivity : BaseActivity(), Observer, MainFragment1.OnFragmentInterac
         super.onDestroy()
         BleManager.getInstance().clearCharacterCallback(bleDevice)
         ObserverManager.getInstance().deleteObserver(this)
+        BleManager.getInstance().disconnect(bleDevice)
     }
 
     override fun onBackPressed() {

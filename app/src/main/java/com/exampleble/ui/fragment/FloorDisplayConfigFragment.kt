@@ -16,14 +16,17 @@ import com.clj.fastble.exception.BleException
 import com.clj.fastble.utils.HexUtil
 import com.exampleble.R
 import com.exampleble.common.ReadRequestConstants
+import com.exampleble.common.ReusedMethod
 import com.exampleble.databinding.FragmentFloorDisplayConfigBinding
 import com.exampleble.ui.MobileActivity
 import com.exampleble.ui.adapters.FloorDisplayConfigAdapter
 import com.exampleble.ui.models.FloorDisplayConfig
+import kotlinx.android.synthetic.main.item_floors_adapter.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.math.floor
 
 class FloorDisplayConfigFragment : BaseFragment() {
 
@@ -50,54 +53,45 @@ class FloorDisplayConfigFragment : BaseFragment() {
     override fun initView() {
         mBinding = getBinding()
         setViews()
-        requireActivity().onBackPressedDispatcher.addCallback(
-            this,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    findNavController().popBackStack()
-                }
-            }
-        )
+
 
         bleDevice = (activity as MobileActivity).getBleDevice()!!
 
         gatt = BleManager.getInstance().getBluetoothGatt(bleDevice)
 
         openCloseNotification(true)
-
     }
 
 
     private fun setViews() {
         mBinding.incAppBar.txtDesc.text = "Floor Display Config"
 
-        floorDisplayConfigAdapter = object : FloorDisplayConfigAdapter(requireContext()) {
-            override fun onItemClick(position: Int) {
-                super.onItemClick(position)
+        setAdapter()
 
-            }
-        }
+    }
+
+    private fun setAdapter(){
+        floorList.add(FloorDisplayConfig("0", "", false))
+        floorList.add(FloorDisplayConfig("1", "", false))
+        floorList.add(FloorDisplayConfig("2", "", false))
+        floorList.add(FloorDisplayConfig("3", "", false))
+        floorList.add(FloorDisplayConfig("4", "", false))
+        floorList.add(FloorDisplayConfig("5", "", false))
+        floorList.add(FloorDisplayConfig("6", "", false))
+        floorList.add(FloorDisplayConfig("7", "", false))
+        floorList.add(FloorDisplayConfig("8", "", false))
+        floorList.add(FloorDisplayConfig("9", "", false))
+        floorList.add(FloorDisplayConfig("10", "", false))
+        floorList.add(FloorDisplayConfig("11", "", false))
+        floorList.add(FloorDisplayConfig("12", "", false))
+        floorList.add(FloorDisplayConfig("13", "", false))
+        floorList.add(FloorDisplayConfig("14", "", false))
+        floorList.add(FloorDisplayConfig("15", "", false))
+
+        floorDisplayConfigAdapter = FloorDisplayConfigAdapter(requireContext(),floorList)
+
         mBinding.rvFloors.layoutManager = LinearLayoutManager(requireContext())
         mBinding.rvFloors.adapter = floorDisplayConfigAdapter
-
-        floorList.add(FloorDisplayConfig("0", "Zeroth", false))
-        floorList.add(FloorDisplayConfig("1", "First", false))
-        floorList.add(FloorDisplayConfig("2", "Second", false))
-        floorList.add(FloorDisplayConfig("3", "Third", false))
-        floorList.add(FloorDisplayConfig("4", "Fourth", false))
-        floorList.add(FloorDisplayConfig("5", "Fifth", false))
-        floorList.add(FloorDisplayConfig("6", "Sixth", false))
-        floorList.add(FloorDisplayConfig("7", "Seventh", false))
-        floorList.add(FloorDisplayConfig("8", "Eighth", false))
-        floorList.add(FloorDisplayConfig("9", "Ninth", false))
-        floorList.add(FloorDisplayConfig("10", "Tenth", false))
-        floorList.add(FloorDisplayConfig("11", "Eleventh", false))
-        floorList.add(FloorDisplayConfig("12", "Twelfth", false))
-        floorList.add(FloorDisplayConfig("13", "Thirteen", false))
-        floorList.add(FloorDisplayConfig("14", "Fourteen", false))
-        floorList.add(FloorDisplayConfig("15", "Fifteen", false))
-
-        floorDisplayConfigAdapter.updateAll(floorList)
 
     }
 
@@ -115,9 +109,35 @@ class FloorDisplayConfigFragment : BaseFragment() {
 
     override fun handleListener() {
         mBinding.incAppBar.btnBack.setOnClickListener {
-            findNavController().popBackStack()
+            requireActivity().onBackPressed()
         }
-        //todo setConfig
+
+
+
+        mBinding.btnSetConfig.setOnClickListener {
+
+
+            val currentVal = StringBuffer()
+
+            Log.i("FloorData", floorList.toString())
+            for(i in floorList){
+                val str = if(i.floorName.length == 1) "0${i.floorName.trim()}"
+                else i.floorName.trim()
+                currentVal.append(str)
+            }
+
+            val strByteArray = currentVal.toString().toByteArray()
+
+            val floorDisplayHexVal = ReusedMethod.stringToHex(strByteArray)
+            val floorDisplayConfigVal = "230301${floorDisplayHexVal}EF"
+
+            Log.i("HexStringWrite", floorDisplayConfigVal.toString())
+
+            writeData(floorDisplayConfigVal) {
+                Toast.makeText(requireContext(), "Config Set Successfully", Toast.LENGTH_SHORT).show()
+            }
+
+        }
     }
 
     override fun initProgressBar() {
@@ -211,16 +231,21 @@ class FloorDisplayConfigFragment : BaseFragment() {
                         CoroutineScope(Dispatchers.Main).launch {
 
                             val hexString = HexUtil.formatHexString(data)
-
-                            /*    val selectedStr = hexString.substring(6, hexString.length - 2)
-                                Log.i("selectedString", selectedStr)
-
-                                for ((index, i) in (1 until selectedStr.length step 2).withIndex()) {
-                                    f[index].isSelected = selectedStr[i] == '1'
-                                }
-                                doorPermissionsAdapter.updateAll(doorPermissionList)
-    */
                             mBinding.initResponseVal.text = hexString
+
+                            val selectedStr = hexString.substring(6, hexString.length - 2)
+                            Log.i("selectedString", selectedStr)
+
+                            for ((index, i) in (selectedStr.indices step 4).withIndex()) {
+                                val currentVal = StringBuffer()
+                                currentVal.append(selectedStr[i])
+                                currentVal.append(selectedStr[i + 1])
+                                currentVal.append(selectedStr[i + 2])
+                                currentVal.append(selectedStr[i + 3])
+                                floorList[index].floorName = ReusedMethod.hexToString(currentVal.toString())
+                            }
+
+                            floorDisplayConfigAdapter.notifyDataSetChanged()
 
                         }
 

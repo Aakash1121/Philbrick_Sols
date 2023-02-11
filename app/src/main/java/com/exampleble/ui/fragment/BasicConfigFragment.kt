@@ -78,7 +78,7 @@ class BasicConfigFragment : BaseFragment() {
 
     override fun handleListener() {
         mBinding.incAppBar.btnBack.setOnClickListener {
-            findNavController().popBackStack()
+            requireActivity().onBackPressed()
         }
 
         mBinding.btnSetConfig.setOnClickListener {

@@ -39,31 +39,30 @@ import com.exampleble.observers.ObserverManager
 import com.exampleble.ui.MobileActivity
 import java.util.*
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-private const val REQUEST_CODE_OPEN_GPS = 1
-private const val REQUEST_CODE_PERMISSION_LOCATION = 2
-private var mDeviceAdapter: DeviceAdapter? = null
-private var layout_setting: LinearLayout? = null
-private var btns_: LinearLayout? = null
-private var btn_scan: Button? = null
-private var btn_write: Button? = null
-private var btn_notify: Button? = null
-private var img_loading: ImageView? = null
-
-private var txt_title: TextView? = null
-private var txt: TextView? = null
-
-private var titleView: AppCompatTextView? = null
-private var backButton: AppCompatImageView? = null
-private var isConnected = false
-
-private var operatingAnim: Animation? = null
-private var progressDialog: ProgressDialog? = null
-private var listener: MainFragment1.OnFragmentInteractionListener? = null
-
 
 class MainFragment1 : Fragment(), DeviceAdapter.OnDeviceClickListener {
+    private val ARG_PARAM1 = "param1"
+    private val ARG_PARAM2 = "param2"
+    private val REQUEST_CODE_OPEN_GPS = 1
+    private val REQUEST_CODE_PERMISSION_LOCATION = 2
+    private var mDeviceAdapter: DeviceAdapter? = null
+    private var layout_setting: LinearLayout? = null
+    private var btns_: LinearLayout? = null
+    private var btn_scan: Button? = null
+    private var btn_write: Button? = null
+    private var btn_notify: Button? = null
+    private var img_loading: ImageView? = null
+
+    private var txt_title: TextView? = null
+    private var txt: TextView? = null
+
+    private var titleView: AppCompatTextView? = null
+    private var backButton: AppCompatImageView? = null
+    private var isConnected = false
+
+    private var operatingAnim: Animation? = null
+    private var progressDialog: ProgressDialog? = null
+    private var listener: MainFragment1.OnFragmentInteractionListener? = null
 
     override fun onConnect(bleDevice: BleDevice?) {
         if (!BleManager.getInstance().isConnected(bleDevice)) {
@@ -88,7 +87,6 @@ class MainFragment1 : Fragment(), DeviceAdapter.OnDeviceClickListener {
     }
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -102,19 +100,19 @@ class MainFragment1 : Fragment(), DeviceAdapter.OnDeviceClickListener {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
 
         val view: View = inflater.inflate(
             R.layout.fragment_main,
             null
         )
-        titleView =  view.findViewById(R.id.txtDesc) as AppCompatTextView
-        backButton =  view.findViewById(R.id.btnBack) as AppCompatImageView
+        titleView = view.findViewById(R.id.txtDesc) as AppCompatTextView
+        backButton = view.findViewById(R.id.btnBack) as AppCompatImageView
         titleView!!.text = "Select Bluetooth"
         backButton!!.setOnClickListener {
-            BleManager.getInstance().cancelScan()
-            findNavController().popBackStack()
+            if((activity as MobileActivity).getBleDevice()!=null) BleManager.getInstance().cancelScan()
+            requireActivity().onBackPressed()
         }
         btn_scan = view.findViewById(R.id.btn_scan) as Button
         btn_scan?.text = getString(R.string.start_scan)
@@ -234,9 +232,7 @@ class MainFragment1 : Fragment(), DeviceAdapter.OnDeviceClickListener {
     private fun onPermissionGranted(permission: String) {
         when (permission) {
             Manifest.permission.ACCESS_FINE_LOCATION ->
-                if (Build.VERSION.SDK_INT >=
-                    Build.VERSION_CODES.M && !checkGPSIsOpen()
-                ) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !checkGPSIsOpen()) {
                     AlertDialog.Builder(context)
                         .setTitle(R.string.notifyTitle)
                         .setMessage(R.string.gpsNotifyMsg)
@@ -251,31 +247,38 @@ class MainFragment1 : Fragment(), DeviceAdapter.OnDeviceClickListener {
                         .setCancelable(false)
                         .show()
                 } else {
-
-                    if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED) {
-
-                        if (ContextCompat.checkSelfPermission(
-                                requireContext(), Manifest.permission.BLUETOOTH_CONNECT
-                            ) == PackageManager.PERMISSION_GRANTED
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        if (ContextCompat.checkSelfPermission(requireContext(),
+                                Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED
                         ) {
 
-                            startScan()
+                            if (ContextCompat.checkSelfPermission(
+                                    requireContext(), Manifest.permission.BLUETOOTH_CONNECT
+                                ) == PackageManager.PERMISSION_GRANTED
+                            ) {
+
+                                startScan()
+                            } else {
+                                Toast.makeText(requireActivity(),
+                                    "Granting Permission...Please try again",
+                                    Toast.LENGTH_SHORT).show()
+                                ActivityCompat.requestPermissions(
+                                    requireActivity(),
+                                    arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
+                                    101
+                                )
+
+                            }
                         } else {
-                            Toast.makeText(requireActivity(), "Granting Permission...Please try again", Toast.LENGTH_SHORT).show()
+
                             ActivityCompat.requestPermissions(
-                                requireActivity(), arrayOf(Manifest.permission.BLUETOOTH_CONNECT), 101
+                                requireActivity(), arrayOf(Manifest.permission.BLUETOOTH_SCAN), 101
                             )
 
                         }
                     } else {
-
-                        ActivityCompat.requestPermissions(
-                            requireActivity(), arrayOf(Manifest.permission.BLUETOOTH_SCAN), 101
-                        )
-
+                        startScan()
                     }
-
-//                    startScan()
                 }
         }
     }
@@ -291,10 +294,11 @@ class MainFragment1 : Fragment(), DeviceAdapter.OnDeviceClickListener {
 
     override fun onPause() {
         super.onPause()
-        Log.i("OnPauseCalled","Called on Pause")
+        Log.i("OnPauseCalled", "Called on Pause")
 
 
     }
+
     private fun startScan() {
         BleManager.getInstance().scan(object : BleScanCallback() {
             override fun onScanStarted(success: Boolean) {
@@ -369,7 +373,7 @@ class MainFragment1 : Fragment(), DeviceAdapter.OnDeviceClickListener {
                 isActiveDisConnected: Boolean,
                 bleDevice: BleDevice,
                 gatt: BluetoothGatt,
-                status: Int
+                status: Int,
             ) {
                 progressDialog?.dismiss()
                 btns_?.visibility = View.INVISIBLE

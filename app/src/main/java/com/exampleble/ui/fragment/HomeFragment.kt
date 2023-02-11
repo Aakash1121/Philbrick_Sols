@@ -1,9 +1,12 @@
 package com.exampleble.ui.fragment
 
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.exampleble.R
+import com.exampleble.common.ReusedMethod
 import com.exampleble.databinding.FragmentHomeBinding
 import com.exampleble.ui.MobileActivity
+import com.exampleble.ui.bluetoothfragment.MainFragment1
 
 class HomeFragment : BaseFragment() {
     private lateinit var mBinding: FragmentHomeBinding
@@ -19,8 +22,12 @@ class HomeFragment : BaseFragment() {
     override fun initView() {
         mBinding = getBinding()
 
+
         mBinding.btnBluetooth.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_mainFragment1)
+            ReusedMethod.navigateToFragment(requireActivity().supportFragmentManager,
+                R.id.nav_host_fragment,
+                MainFragment1(),true)
+//            findNavController().navigate(R.id.action_homeFragment_to_mainFragment1)
         }
         if ((activity as MobileActivity).isBLEConnected) {
             mBinding.btnFloorDisplaying.isEnabled = true
@@ -31,33 +38,54 @@ class HomeFragment : BaseFragment() {
             mBinding.btnMotorOverrunTimeout.isEnabled = true
             mBinding.btnExtraConfig.isEnabled = true
 
-
             mBinding.btnFloorDisplaying.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_floorDisplayConfigFragment)
+                ReusedMethod.navigateToFragment(requireActivity().supportFragmentManager,
+                    R.id.nav_host_fragment,
+                    FloorDisplayConfigFragment(),true)
+//            findNavController().navigate(R.id.action_homeFragment_to_floorDisplayConfigFragment)
             }
 
+
             mBinding.btnBasicConfig.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_basicConfigFragment)
+                ReusedMethod.navigateToFragment(requireActivity().supportFragmentManager,
+                    R.id.nav_host_fragment,
+                    BasicConfigFragment(),true)
+//                findNavController().navigate(R.id.action_homeFragment_to_basicConfigFragment)
             }
 
             mBinding.btnAutoDoorConfig.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_autoDoorConfigFragment)
+                ReusedMethod.navigateToFragment(requireActivity().supportFragmentManager,
+                    R.id.nav_host_fragment,
+                    AutoDoorConfigFragment(),true)
+//                findNavController().navigate(R.id.action_homeFragment_to_autoDoorConfigFragment)
             }
 
             mBinding.btnDoorPermission.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_doorPermissionFragment)
+                ReusedMethod.navigateToFragment(requireActivity().supportFragmentManager,
+                    R.id.nav_host_fragment,
+                    DoorPermissionFragment(),true)
+//                findNavController().navigate(R.id.action_homeFragment_to_doorPermissionFragment)
             }
 
             mBinding.btnTrips.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_tripsFragment)
+                ReusedMethod.navigateToFragment(requireActivity().supportFragmentManager,
+                    R.id.nav_host_fragment,
+                    TripsFragment(),true)
+//                findNavController().navigate(R.id.action_homeFragment_to_tripsFragment)
             }
 
             mBinding.btnMotorOverrunTimeout.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_motorConfigFragment)
+                ReusedMethod.navigateToFragment(requireActivity().supportFragmentManager,
+                    R.id.nav_host_fragment,
+                    MotorConfigFragment(),true)
+//                findNavController().navigate(R.id.action_homeFragment_to_motorConfigFragment)
             }
 
             mBinding.btnExtraConfig.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_extraConfigFragment)
+                ReusedMethod.navigateToFragment(requireActivity().supportFragmentManager,
+                    R.id.nav_host_fragment,
+                    ExtraConfigFragment(),true)
+//                findNavController().navigate(R.id.action_homeFragment_to_extraConfigFragment)
             }
 
         }

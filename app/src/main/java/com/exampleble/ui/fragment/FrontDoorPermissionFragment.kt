@@ -53,7 +53,6 @@ class FrontDoorPermissionFragment : BaseFragment() {
         gatt = BleManager.getInstance().getBluetoothGatt(bleDevice)
 
         openCloseNotification(true)
-
     }
 
     private fun setViews() {
@@ -104,7 +103,7 @@ class FrontDoorPermissionFragment : BaseFragment() {
 
     override fun handleListener() {
         mBinding.incAppBar.btnBack.setOnClickListener {
-            findNavController().popBackStack()
+            requireActivity().onBackPressed()
         }
 
         mBinding.btnSetConfig.setOnClickListener {
@@ -119,7 +118,7 @@ class FrontDoorPermissionFragment : BaseFragment() {
             }
 
 
-            val frontDoorConfigVal = "130204${selectedList}EF"
+            val frontDoorConfigVal = "130304${selectedList}EF"
 
             Log.i("HexStringWrite", frontDoorConfigVal.toString())
 

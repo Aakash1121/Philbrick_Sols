@@ -59,4 +59,5 @@
     <string name="text_error_connection">Look a like we lost you for a moment. Please retry!!!</string>
     <string name="text_error_network">No Internet connection!!!</string>
     <string name="philbrick_solutions">"Philbrick Solutions "</string>
+    <string name="lift_setu">LiftSetu</string>
 </resources>

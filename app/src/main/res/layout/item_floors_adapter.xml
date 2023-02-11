@@ -1,34 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackground"
-    android:orientation="horizontal">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/txtFloorNoVal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:fontFamily="@font/neuealtegrotesk_bold"
-        android:text="0"
-        android:gravity="center"
-        android:padding="@dimen/_10sdp"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_12ssp"
-      />
+    <data>
+        <variable
+            name="floorDisplay"
+            type="com.exampleble.ui.models.FloorDisplayConfig" />
+    </data>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/txtFloorNameVal"
-        android:layout_width="0dp"
-        android:layout_weight="1"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/neuealtegrotesk_bold"
-        android:text="Zero"
-        android:gravity="center"
-        android:padding="@dimen/_10sdp"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_12ssp"
-        />
-</LinearLayout>
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtFloorNoVal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/neuealtegrotesk_bold"
+            android:text="@={floorDisplay.floorNo}"
+            android:gravity="center"
+            android:padding="@dimen/_10sdp"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12ssp" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/txtFloorNameVal"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/neuealtegrotesk_bold"
+            android:gravity="center"
+            android:text="@={floorDisplay.floorName}"
+            android:padding="@dimen/_10sdp"
+            android:maxLength="2"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_12ssp" />
+    </LinearLayout>
+</layout>

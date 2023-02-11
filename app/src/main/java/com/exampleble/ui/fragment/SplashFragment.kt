@@ -3,6 +3,7 @@ package com.exampleble.ui.fragment
 import android.os.Handler
 import androidx.navigation.fragment.findNavController
 import com.exampleble.R
+import com.exampleble.common.ReusedMethod
 import com.exampleble.databinding.FragmentSplashBinding
 
 class SplashFragment : BaseFragment() {
@@ -18,7 +19,11 @@ class SplashFragment : BaseFragment() {
 
     override fun initView() {
         Handler().postDelayed(
-            { findNavController().navigate(R.id.action_splashFragment_to_homeFragment) },
+            {
+                ReusedMethod.navigateToFragment(requireActivity().supportFragmentManager,
+                    R.id.nav_host_fragment,
+                    HomeFragment(),false)
+            },
             1000
         )
     }

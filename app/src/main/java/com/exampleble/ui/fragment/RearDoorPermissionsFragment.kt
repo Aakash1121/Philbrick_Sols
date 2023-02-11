@@ -105,7 +105,7 @@ class RearDoorPermissionsFragment : BaseFragment() {
     override fun handleListener() {
 
         mBinding.incAppBar.btnBack.setOnClickListener {
-            findNavController().popBackStack()
+            requireActivity().onBackPressed()
         }
 
         mBinding.btnSetConfig.setOnClickListener {
@@ -120,7 +120,7 @@ class RearDoorPermissionsFragment : BaseFragment() {
             }
 
 
-            val rearDoorConfigVal = "130205${selectedList}EF"
+            val rearDoorConfigVal = "130305${selectedList}EF"
 
             Log.i("HexStringWrite", rearDoorConfigVal.toString())
 
