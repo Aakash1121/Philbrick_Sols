@@ -19,6 +19,22 @@ class HomeFragment : BaseFragment() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        if (!(activity as MobileActivity).isBLEConnected) {
+            mBinding.btnFloorDisplaying.isEnabled = false
+            mBinding.btnBasicConfig.isEnabled = false
+            mBinding.btnAutoDoorConfig.isEnabled = false
+            mBinding.btnDoorPermission.isEnabled = false
+            mBinding.btnTrips.isEnabled = false
+            mBinding.btnMotorOverrunTimeout.isEnabled = false
+            mBinding.btnExtraConfig.isEnabled = false
+
+
+        }
+    }
+
     override fun initView() {
         mBinding = getBinding()
 

@@ -26,18 +26,18 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.clj.fastble.BleManager
 import com.clj.fastble.callback.BleGattCallback
 import com.clj.fastble.callback.BleScanCallback
 import com.clj.fastble.data.BleDevice
 import com.clj.fastble.exception.BleException
 import com.exampleble.DeviceAdapter
-
 import com.exampleble.R
 import com.exampleble.observers.ObserverManager
 import com.exampleble.ui.MobileActivity
-import java.util.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 
 
 class MainFragment1 : Fragment(), DeviceAdapter.OnDeviceClickListener {
@@ -111,16 +111,17 @@ class MainFragment1 : Fragment(), DeviceAdapter.OnDeviceClickListener {
         backButton = view.findViewById(R.id.btnBack) as AppCompatImageView
         titleView!!.text = "Select Bluetooth"
         backButton!!.setOnClickListener {
-            if((activity as MobileActivity).getBleDevice()!=null) BleManager.getInstance().cancelScan()
+            if ((activity as MobileActivity).getBleDevice() != null) BleManager.getInstance()
+                .cancelScan()
             requireActivity().onBackPressed()
         }
         btn_scan = view.findViewById(R.id.btn_scan) as Button
-        btn_scan?.text = getString(R.string.start_scan)
+        btn_scan?.text = context?.resources?.getString(R.string.start_scan)
         btn_scan?.setOnClickListener {
 
-            if (btn_scan?.text == getString(R.string.start_scan)) {
+            if (btn_scan?.text == context?.resources?.getString(R.string.start_scan)) {
                 checkPermissions()
-            } else if (btn_scan?.text == getString(R.string.stop_scan)) {
+            } else if (btn_scan?.text == context?.resources?.getString(R.string.stop_scan)) {
                 BleManager.getInstance().cancelScan()
             }
 
@@ -200,7 +201,11 @@ class MainFragment1 : Fragment(), DeviceAdapter.OnDeviceClickListener {
     private fun checkPermissions() {
         val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         if (!bluetoothAdapter.isEnabled) {
-            Toast.makeText(activity, getString(R.string.please_open_blue), Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                activity,
+                context?.resources?.getString(R.string.please_open_blue),
+                Toast.LENGTH_LONG
+            ).show()
             return
         }
 
@@ -248,8 +253,10 @@ class MainFragment1 : Fragment(), DeviceAdapter.OnDeviceClickListener {
                         .show()
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        if (ContextCompat.checkSelfPermission(requireContext(),
-                                Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED
+                        if (ContextCompat.checkSelfPermission(
+                                requireContext(),
+                                Manifest.permission.BLUETOOTH_SCAN
+                            ) == PackageManager.PERMISSION_GRANTED
                         ) {
 
                             if (ContextCompat.checkSelfPermission(
@@ -259,9 +266,15 @@ class MainFragment1 : Fragment(), DeviceAdapter.OnDeviceClickListener {
 
                                 startScan()
                             } else {
-                                Toast.makeText(requireActivity(),
-                                    "Granting Permission...Please try again",
-                                    Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    activity,
+                                    "Granting Permission...Please try again\",",
+                                    Toast.LENGTH_LONG
+                                ).show()
+
+                                /*  Toast.makeText(requireActivity(),
+                                      "Granting Permission...Please try again",
+                                      Toast.LENGTH_SHORT).show()*/
                                 ActivityCompat.requestPermissions(
                                     requireActivity(),
                                     arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
@@ -307,7 +320,7 @@ class MainFragment1 : Fragment(), DeviceAdapter.OnDeviceClickListener {
                 mDeviceAdapter?.notifyDataSetChanged()
                 img_loading?.startAnimation(operatingAnim)
                 img_loading?.visibility = View.VISIBLE
-                btn_scan?.text = getString(R.string.stop_scan)
+                btn_scan?.text = context?.resources?.getString(R.string.stop_scan)
             }
 
             override fun onLeScan(bleDevice: BleDevice?) {
@@ -323,7 +336,7 @@ class MainFragment1 : Fragment(), DeviceAdapter.OnDeviceClickListener {
             override fun onScanFinished(scanResultList: List<BleDevice>) {
                 img_loading?.clearAnimation()
                 img_loading?.visibility = View.INVISIBLE
-                btn_scan?.text = getString(R.string.start_scan)
+                btn_scan?.text = "Start scanning"
             }
         })
     }
@@ -337,13 +350,15 @@ class MainFragment1 : Fragment(), DeviceAdapter.OnDeviceClickListener {
             override fun onConnectFail(bleDevice: BleDevice, exception: BleException) {
                 img_loading?.clearAnimation()
                 img_loading?.setVisibility(View.INVISIBLE)
-                btn_scan?.setText(getString(R.string.start_scan))
+                btn_scan?.setText("Start scanning")
                 progressDialog?.dismiss()
-                Toast.makeText(
-                    context,
-                    getString(R.string.connect_fail),
-                    Toast.LENGTH_LONG
-                ).show()
+                /*  Toast.makeText(
+                      requireContext(),
+                      "connection failed",
+                      Toast.LENGTH_LONG
+                  ).show()*/
+                Toast.makeText(activity, "connection failed", Toast.LENGTH_LONG).show()
+
             }
 
             override fun onConnectSuccess(bleDevice: BleDevice, gatt: BluetoothGatt, status: Int) {
@@ -382,17 +397,21 @@ class MainFragment1 : Fragment(), DeviceAdapter.OnDeviceClickListener {
                 mDeviceAdapter?.notifyDataSetChanged()
 
                 if (isActiveDisConnected) {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.active_disconnected),
-                        Toast.LENGTH_LONG
-                    ).show()
+                    /* Toast.makeText(
+                         requireActivity().applicationContext,
+                         "Connection disconnect",
+                         Toast.LENGTH_LONG
+                     ).show()*/
+
+
                 } else {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.disconnected),
-                        Toast.LENGTH_LONG
-                    ).show()
+                    /* Toast.makeText(
+                         requireActivity().applicationContext,
+                         "Connection disconnect",
+                         Toast.LENGTH_LONG
+                     ).show()*/
+
+
                     ObserverManager.getInstance().notifyObserver(bleDevice)
                 }
 

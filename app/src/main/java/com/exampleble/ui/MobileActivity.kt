@@ -132,10 +132,10 @@ class MobileActivity : BaseActivity(), Observer, MainFragment1.OnFragmentInterac
             //finish()
             Toast.makeText(
                 this,
-                "Desconnection",
+                "Connection Disconnected",
                 Toast.LENGTH_LONG
             ).show()
-
+            isBLEConnected = false
         }
     }
 

@@ -33,6 +33,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/neuealtegrotesk_bold"
             android:gravity="center"
+            android:inputType="text"
             android:text="@={floorDisplay.floorName}"
             android:padding="@dimen/_10sdp"
             android:maxLength="2"

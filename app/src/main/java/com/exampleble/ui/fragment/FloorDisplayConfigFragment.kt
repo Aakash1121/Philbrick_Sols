@@ -5,8 +5,6 @@ import android.bluetooth.BluetoothGattCharacteristic
 import android.bluetooth.BluetoothGattService
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.clj.fastble.BleManager
 import com.clj.fastble.callback.BleNotifyCallback
@@ -21,26 +19,24 @@ import com.exampleble.databinding.FragmentFloorDisplayConfigBinding
 import com.exampleble.ui.MobileActivity
 import com.exampleble.ui.adapters.FloorDisplayConfigAdapter
 import com.exampleble.ui.models.FloorDisplayConfig
-import kotlinx.android.synthetic.main.item_floors_adapter.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.math.floor
 
 class FloorDisplayConfigFragment : BaseFragment() {
 
     private lateinit var mBinding: FragmentFloorDisplayConfigBinding
     private var floorList = arrayListOf<FloorDisplayConfig>()
     private lateinit var floorDisplayConfigAdapter: FloorDisplayConfigAdapter
-    private var currentlySelectedPosition = -1
 
     private lateinit var bleDevice: BleDevice
     private lateinit var gatt: BluetoothGatt
     private lateinit var gattService: BluetoothGattService
     private lateinit var gattCharacteristic: BluetoothGattCharacteristic
     private var isInitial = false
-
+    private var notificationResponse = StringBuffer()
+    private var responseLength = -1
 
     override fun getInflateResource(): Int {
         return R.layout.fragment_floor_display_config
@@ -70,7 +66,7 @@ class FloorDisplayConfigFragment : BaseFragment() {
 
     }
 
-    private fun setAdapter(){
+    private fun setAdapter() {
         floorList.add(FloorDisplayConfig("0", "", false))
         floorList.add(FloorDisplayConfig("1", "", false))
         floorList.add(FloorDisplayConfig("2", "", false))
@@ -88,7 +84,7 @@ class FloorDisplayConfigFragment : BaseFragment() {
         floorList.add(FloorDisplayConfig("14", "", false))
         floorList.add(FloorDisplayConfig("15", "", false))
 
-        floorDisplayConfigAdapter = FloorDisplayConfigAdapter(requireContext(),floorList)
+        floorDisplayConfigAdapter = FloorDisplayConfigAdapter(requireContext(), floorList)
 
         mBinding.rvFloors.layoutManager = LinearLayoutManager(requireContext())
         mBinding.rvFloors.adapter = floorDisplayConfigAdapter
@@ -97,7 +93,11 @@ class FloorDisplayConfigFragment : BaseFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        openCloseNotification(false)
+        try {
+            openCloseNotification(false)
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
     }
 
     override fun postInit() {
@@ -120,8 +120,8 @@ class FloorDisplayConfigFragment : BaseFragment() {
             val currentVal = StringBuffer()
 
             Log.i("FloorData", floorList.toString())
-            for(i in floorList){
-                val str = if(i.floorName.length == 1) "0${i.floorName.trim()}"
+            for (i in floorList) {
+                val str = if (i.floorName.length == 1) "0${i.floorName.trim()}"
                 else i.floorName.trim()
                 currentVal.append(str)
             }
@@ -132,9 +132,10 @@ class FloorDisplayConfigFragment : BaseFragment() {
             val floorDisplayConfigVal = "230301${floorDisplayHexVal}EF"
 
             Log.i("HexStringWrite", floorDisplayConfigVal.toString())
-
+            notificationResponse.delete(0, notificationResponse.length)
             writeData(floorDisplayConfigVal) {
-                Toast.makeText(requireContext(), "Config Set Successfully", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Config Set Successfully", Toast.LENGTH_SHORT)
+                    .show()
             }
 
         }
@@ -166,6 +167,17 @@ class FloorDisplayConfigFragment : BaseFragment() {
         }
     }
 
+    fun convertByteToHexadecimal(byteArray: ByteArray): String {
+        var hex = ""
+
+        // Iterating through each byte in the array
+        for (i in byteArray) {
+            hex += String.format("%02X", i)
+        }
+//        print(hex)
+        return hex
+    }
+
     private fun writeData(hexString: String, function: (Boolean) -> Unit) {
         BleManager.getInstance().write(bleDevice,
             ReadRequestConstants.SERVICE_UUID,
@@ -176,8 +188,8 @@ class FloorDisplayConfigFragment : BaseFragment() {
                 override fun onWriteSuccess(
                     current: Int, total: Int, justWrite: ByteArray,
                 ) {
-                    function(true)
-                    CoroutineScope(Dispatchers.Main).launch {
+
+//                    CoroutineScope(Dispatchers.Main).launch {
                         Toast.makeText(requireContext(), "Write Successfully", Toast.LENGTH_SHORT)
                             .show()
                         if (!isInitial) {
@@ -185,11 +197,16 @@ class FloorDisplayConfigFragment : BaseFragment() {
                             mBinding.initResponseVal.text =
                                 HexUtil.formatHexString(justWrite).toString()
                         } else {
+
+                            notificationResponse.append(convertByteToHexadecimal(justWrite))
+
                             mBinding.writeResponseVal.text =
-                                HexUtil.formatHexString(justWrite).toString()
+                                notificationResponse.toString()
                         }
-                        Log.i("SuccessResponse", HexUtil.formatHexString(justWrite).toString())
-                    }
+                        Log.i("SuccessResponse", convertByteToHexadecimal(justWrite).toString())
+                        function(true)
+
+//                    }
                 }
 
                 override fun onWriteFailure(exception: BleException) {
@@ -231,6 +248,7 @@ class FloorDisplayConfigFragment : BaseFragment() {
                         CoroutineScope(Dispatchers.Main).launch {
 
                             val hexString = HexUtil.formatHexString(data)
+                            responseLength = hexString.length
                             mBinding.initResponseVal.text = hexString
 
                             val selectedStr = hexString.substring(6, hexString.length - 2)
@@ -242,7 +260,16 @@ class FloorDisplayConfigFragment : BaseFragment() {
                                 currentVal.append(selectedStr[i + 1])
                                 currentVal.append(selectedStr[i + 2])
                                 currentVal.append(selectedStr[i + 3])
-                                floorList[index].floorName = ReusedMethod.hexToString(currentVal.toString())
+                                if (currentVal.toString() == "0000") {
+                                    floorList[index].floorName = "00"
+                                } else {
+                                    var str = ReusedMethod.hexToString(currentVal.toString())
+                                    if (str.trim().length == 1) {
+                                        str = str.trim()
+                                        str = "0$str"
+                                    }
+                                    floorList[index].floorName = str
+                                }
                             }
 
                             floorDisplayConfigAdapter.notifyDataSetChanged()
